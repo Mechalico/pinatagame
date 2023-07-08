@@ -99,11 +99,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 8947419010381617098}
-  maxFullness: 1000
+  maxFullness: 250
   fullness: 0
   depletionRate: 100
   empty: 0
-  player: {fileID: 0}
 --- !u!58 &7486994378147232859
 CircleCollider2D:
   m_ObjectHideFlags: 0
