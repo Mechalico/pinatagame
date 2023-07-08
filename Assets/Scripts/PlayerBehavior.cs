@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    public Rigidbody2D body;
-
-    public SpriteRenderer spriteRenderer;
-
     public List<Sprite> northSprites;
     public List<Sprite> northEastSprites;
     public List<Sprite> eastSprites;
@@ -16,21 +12,29 @@ public class PlayerBehavior : MonoBehaviour
 
     public float walkSpeed;
     public float frameRate;
-    public Vector2 direction;
 
     public Equip pickup; 
 
     public float heldCandy = 0.0F;
 
+    private Rigidbody2D _body;
+    private Vector2 _direction;
+    private SpriteRenderer _spriteRenderer;
     private float _idleTime;
 
-    void Update()
+    private void Awake()
+    {
+        this._body = this.GetComponent<Rigidbody2D>();
+        this._spriteRenderer = this.GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
     {
         UpdateSpriteFlip();
         UpdateSpriteFrame();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         UpdateVelocity();
     }
@@ -50,15 +54,15 @@ public class PlayerBehavior : MonoBehaviour
         var xInput = Input.GetAxisRaw("Horizontal");
         var yInput = Input.GetAxisRaw("Vertical");
         // We normalize the vector to curve the input and prevent diagonal movement having higher velocity
-        this.direction = new Vector2(xInput, yInput).normalized;
-        body.velocity = this.direction * this.walkSpeed * this.GetCandyPenalty() * Time.deltaTime;
+        this._direction = new Vector2(xInput, yInput).normalized;
+        this._body.velocity = this._direction * this.walkSpeed * this.GetCandyPenalty() * Time.deltaTime;
     }
 
     private void UpdateSpriteFlip()
     {
-        if (this.direction.x != 0)
+        if (this._direction.x != 0)
         {
-            spriteRenderer.flipX = this.direction.x < 0;
+            this._spriteRenderer.flipX = this._direction.x < 0;
         }
     }
 
@@ -76,19 +80,19 @@ public class PlayerBehavior : MonoBehaviour
         var totalFrames = (int) (walkTime * frameRate);
         var frame = totalFrames % sprites.Count;
 
-        spriteRenderer.sprite = sprites[frame];
+        this._spriteRenderer.sprite = sprites[frame];
     }
 
     private List<Sprite> GetAnimationSprites()
     {
-        var movingHorizontally = Mathf.Abs(this.direction.x) > 0;
+        var movingHorizontally = Mathf.Abs(this._direction.x) > 0;
 
-        if (this.direction.y > 0)
+        if (this._direction.y > 0)
         {
             return movingHorizontally ? this.northEastSprites : this.northSprites;
         }
 
-        if (this.direction.y < 0)
+        if (this._direction.y < 0)
         {
             return movingHorizontally ? this.southEastSprites : this.southSprites;
         }
