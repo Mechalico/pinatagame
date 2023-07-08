@@ -14,12 +14,15 @@ public class CandybowlBehavior : MonoBehaviour
     bool readyToTake = false;
     bool taking = false;
     // public Slider slider;
-    public PlayerBehavior player;
+    PlayerBehavior player;
 
     void Start()
     {
         fullness = maxFullness;
         spriteRenderer.color = Color.magenta;
+        var playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null && playerObject.GetComponent<PlayerBehavior>() != null )
+            player = playerObject.GetComponent<PlayerBehavior>();
     }
 
     private void Update()

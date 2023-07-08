@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ExitBehavior : MonoBehaviour
 {
-    public PlayerBehavior player;
+    PlayerBehavior player;
     public bool victory = false;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        var playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null && playerObject.GetComponent<PlayerBehavior>() != null)
+            player = playerObject.GetComponent<PlayerBehavior>();
     }
 
     // Update is called once per frame
