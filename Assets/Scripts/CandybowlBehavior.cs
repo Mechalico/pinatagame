@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CandybowlBehavior : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class CandybowlBehavior : MonoBehaviour
     public float fullness;
     public float depletionRate;
     public bool empty = false;
+    public bool taking = false;
+    public Slider slider;
+    public PlayerBehavior player;
 
     // Start is called before the first frame update
     void Start()
@@ -17,22 +21,31 @@ public class CandybowlBehavior : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if (taking)
+        {
+            player.heldCandy += Deplete();
+            slider.value = fullness / 100f;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!empty)
-        {
-            spriteRenderer.color = Color.red;
-        }
+        if (empty) return;
+
+        if (collider.gameObject != player.gameObject) return;
+        //guard clauses ensure bowl is nonempty and touched by player
+        spriteRenderer.color = Color.red;
+        slider.gameObject.SetActive(true);
+        taking = true;
+        
     }
 
     public float Deplete()
     {
         float toAdd;
+
         if (fullness < depletionRate)
         {
             toAdd = fullness;
@@ -50,9 +63,10 @@ public class CandybowlBehavior : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (!empty)
-        {
-            spriteRenderer.color = Color.magenta;
-        }
+        if (collider.gameObject != player.gameObject) return;
+        //player left this bowl
+        if (!empty) spriteRenderer.color = Color.magenta;
+        slider.gameObject.SetActive(false);
+        taking = false;
     }
 }
