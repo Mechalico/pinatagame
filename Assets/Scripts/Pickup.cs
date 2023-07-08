@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    public int pickupType;
+    public int pickupType; //replace with enum?
     public Sprite[] sprites;
 
     public SpriteRenderer spriteRenderer;
@@ -30,7 +30,10 @@ public class Pickup : MonoBehaviour
 
     void pickupSprite()
     {
-        spriteRenderer.sprite = sprites[pickupType-1];
+        if (pickupType != 0)
+        {
+            spriteRenderer.sprite = sprites[pickupType - 1];
+        }
     }
 
 }

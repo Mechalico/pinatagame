@@ -13,7 +13,7 @@ public class PlayerBehavior : MonoBehaviour
 
     Vector2 inputMovement;
 
-    public int pickup;
+    public int pickup; //could replace with enum?
 
     void Update()
     {
@@ -22,6 +22,13 @@ public class PlayerBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity = inputMovement * moveSpeed * Time.deltaTime;
+        float candyPenalty = 1 - Mathf.Min(heldCandy / 1250, 0.8f);
+        rb.velocity = moveSpeed * candyPenalty * Time.deltaTime * inputMovement;
+    }
+
+    public void AddCandy(float candyToAdd)
+    {
+        heldCandy += candyToAdd;
+        
     }
 }
