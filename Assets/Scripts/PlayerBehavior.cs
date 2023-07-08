@@ -21,7 +21,6 @@ public class PlayerBehavior : MonoBehaviour
     public Equip pickup; 
 
     public float heldCandy = 0.0F;
-    public int pickup = 0;
 
     private float _idleTime;
 
