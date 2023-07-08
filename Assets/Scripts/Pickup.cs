@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    public int pickupType; //replace with enum?
-    public Sprite[] sprites;
+    public Equip pickupType;
 
     public SpriteRenderer spriteRenderer;
 
@@ -16,13 +15,13 @@ public class Pickup : MonoBehaviour
     {
         if (other.gameObject != player.gameObject) return;
         //guard clauses ensure pickup is being touched by the player
-        int oldPickup = player.pickup;
+        Equip oldPickup = player.pickup;
         player.pickup = pickupType;
         pickupType = oldPickup;
-        if (oldPickup == 0) Destroy(gameObject);
+        if (oldPickup == null) Destroy(gameObject);
         pickupSprite();
     }
-    // Start is called before the first frame update
+    
     void Start()
     {
         pickupSprite();
@@ -30,10 +29,8 @@ public class Pickup : MonoBehaviour
 
     void pickupSprite()
     {
-        if (pickupType != 0)
-        {
-            spriteRenderer.sprite = sprites[pickupType - 1];
-        }
+        spriteRenderer.sprite = pickupType.sprite;
+    
     }
 
 }

@@ -13,7 +13,7 @@ public class PlayerBehavior : MonoBehaviour
 
     Vector2 inputMovement;
 
-    public int pickup; //could replace with enum?
+    public Equip pickup; 
 
     void Update()
     {
