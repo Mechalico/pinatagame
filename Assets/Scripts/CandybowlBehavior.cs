@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CandybowlBehavior : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
+    public float maxFullness;
     public float fullness;
     public float depletionRate;
     public bool empty = false;
@@ -17,6 +18,7 @@ public class CandybowlBehavior : MonoBehaviour
 
     void Start()
     {
+        fullness = maxFullness;
         spriteRenderer.color = Color.magenta;
     }
 
@@ -47,10 +49,10 @@ public class CandybowlBehavior : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         //guard clause to ensure bowl is being touched by the player
-        if (collider.gameObject == player.gameObject)
+        if (other.gameObject == player.gameObject)
         {
             if (!empty)
             {
@@ -82,9 +84,9 @@ public class CandybowlBehavior : MonoBehaviour
         return toAdd;
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (collider.gameObject != player.gameObject) return;
+        if (other.gameObject != player.gameObject) return;
         //player left this bowl
 
         if (!empty) spriteRenderer.color = Color.magenta;

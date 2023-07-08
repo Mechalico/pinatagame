@@ -12,9 +12,9 @@ public class Pickup : MonoBehaviour
     public PlayerBehavior player;
 
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collider.gameObject != player.gameObject) return;
+        if (other.gameObject != player.gameObject) return;
         //guard clauses ensure pickup is being touched by the player
         int oldPickup = player.pickup;
         player.pickup = pickupType;

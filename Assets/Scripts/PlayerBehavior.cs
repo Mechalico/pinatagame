@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour
 {
     public float moveSpeed;
-    public float rollSpeed;
+    //public float rollSpeed;
 
     public float heldCandy;
 
