@@ -55,9 +55,6 @@ public class Guard : MonoBehaviour
         rb.position = thisWaypoint.transform.position;
         rb.rotation = thisWaypoint.transform.rotation.eulerAngles.z;
 
-        Debug.Log(thisWaypoint.transform.rotation.eulerAngles.z);
-        Debug.Log("Set next waypoint");
-
         targetIndex++;
         timeWalked = 0;
         //target initial point after reaching target point
@@ -83,8 +80,6 @@ public class Guard : MonoBehaviour
                 else
                     rotationSpeed = (nextWaypoint.transform.rotation.eulerAngles.z - rb.rotation - 360) / nextWaypointScript.timeToArrive;
             }
-
-            Debug.Log(rotationSpeed);
         }
     }
 
