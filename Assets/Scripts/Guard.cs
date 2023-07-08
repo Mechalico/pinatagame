@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Guard : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
     GameObject playerObject;
     PlayerBehavior player;
 
@@ -20,7 +21,16 @@ public class Guard : MonoBehaviour
     float timeToArrive;
     float timeWalked;
     float rotationSpeed;
-    Vector3 rotationVelocity;
+
+    Vector2 locationStopped;
+    float rotationStopped;
+
+    public float suspicionRange = 10;
+    public float suspicionAngle = 30;
+    public float suspicionAlertLimit = 1f;
+    float suspicionAlert = 0;
+    public float suspicionCooldownLimit = 3f;
+    float suspicionCooldown = 0;
 
     void Start()
     {
@@ -29,27 +39,47 @@ public class Guard : MonoBehaviour
         player = playerObject.GetComponent<PlayerBehavior>();
 
         targetIndex = 0;
-        setNextWaypoint();
+        SetNextWaypoint();
     }
 
     void FixedUpdate()
     {
-        if (guardState == GuardState.Patrol)
+        switch (guardState)
         {
-            timeWalked += Time.deltaTime;
-            rb.velocity = inputMovement / timeToArrive;
-            rb.rotation += (rotationSpeed * Time.deltaTime);
-            //move in that direction
-            if (timeWalked >= timeToArrive)
-            {
-                setNextWaypoint();
-            }
-
+            case GuardState.Patrol:
+                spriteRenderer.color = Color.blue;
+                timeWalked += Time.deltaTime;
+                rb.velocity = inputMovement / timeToArrive;
+                rb.rotation += (rotationSpeed * Time.deltaTime);
+                //move in that direction
+                if (timeWalked >= timeToArrive)
+                {
+                    SetNextWaypoint();
+                }
+                break;
+            case GuardState.Suspicious:
+                rb.velocity = Vector2.zero;
+                spriteRenderer.color = Color.yellow;
+                if (CheckPlayerInRange())
+                {
+                    suspicionCooldown = 0;
+                    suspicionAlert += Time.deltaTime;
+                }
+                else
+                {
+                    suspicionAlert = 0;
+                    suspicionCooldown += Time.deltaTime;
+                }
+                break;
+            case GuardState.Chase:
+                spriteRenderer.color = Color.red;
+                break;
         }
 
+        CheckForStateChanges();
     }
 
-    void setNextWaypoint()
+    void SetNextWaypoint()
     {
         var thisWaypoint = targets[targetIndex];
         rb.position = thisWaypoint.transform.position;
@@ -71,21 +101,63 @@ public class Guard : MonoBehaviour
         {
             timeToArrive = nextWaypointScript.timeToArrive;
 
-            if (nextWaypoint.transform.rotation.eulerAngles.z == rb.rotation)
-                rotationSpeed = 0;
-            else
+            var rawRotation = nextWaypoint.transform.rotation.eulerAngles.z - rb.rotation;
+
+            if (rawRotation < 0)
             {
                 if (nextWaypointScript.isClockwise)
-                    rotationSpeed = (nextWaypoint.transform.rotation.eulerAngles.z - rb.rotation) / nextWaypointScript.timeToArrive;
+                    rotationSpeed = rawRotation / nextWaypointScript.timeToArrive;
                 else
-                    rotationSpeed = (nextWaypoint.transform.rotation.eulerAngles.z - rb.rotation - 360) / nextWaypointScript.timeToArrive;
+                    rotationSpeed = (rawRotation + 360) / nextWaypointScript.timeToArrive;
+            }
+            else if (rawRotation > 0)
+            {
+                if (nextWaypointScript.isClockwise)
+                    rotationSpeed = (rawRotation - 360) / nextWaypointScript.timeToArrive;
+                else
+                    rotationSpeed = rawRotation / nextWaypointScript.timeToArrive;
+            }
+            else if (rawRotation == 0)
+                rotationSpeed = 0;
+        }
+    }
+
+    void CheckForStateChanges()
+    {
+        if (guardState == GuardState.Patrol || guardState == GuardState.Reset)
+        {
+            if (CheckPlayerInRange())
+            {
+                suspicionCooldown = 0;
+                suspicionAlert = 0;
+                guardState = GuardState.Suspicious;
             }
         }
+        if (guardState == GuardState.Suspicious)
+        {
+            if (suspicionAlert > suspicionAlertLimit) guardState = GuardState.Chase;
+            if (suspicionCooldown > suspicionCooldownLimit) guardState = GuardState.Patrol;
+        }
+    }
+
+    bool CheckPlayerInRange()
+    {
+        var pathToPlayer = playerObject.GetComponent<Rigidbody2D>().position - rb.position;
+        Debug.Log(pathToPlayer.magnitude);
+        if (pathToPlayer.magnitude > suspicionRange) { return false; }
+        var angle = Vector3.Angle(pathToPlayer.normalized, rb.transform.up);
+        Debug.Log(angle);
+        if (Math.Abs(angle) > suspicionRange) { return false; }
+
+        //TODO raytrace
+
+        return true;
     }
 
     enum GuardState
     {
         Patrol,
+        Suspicious,
         Chase,
         Stunned,
         Reset

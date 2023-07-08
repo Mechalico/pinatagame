@@ -29,12 +29,12 @@ public class CandybowlBehavior : MonoBehaviour
     {
         if (readyToTake && !empty)
         {
-            if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+            if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.JoystickButton0))
             {
                 spriteRenderer.color = Color.blue;
                 taking = true;
             }
-            if (Input.GetKeyUp(KeyCode.J) || Input.GetKeyUp(KeyCode.Joystick1Button0))
+            if (Input.GetKeyUp(KeyCode.J) || Input.GetKeyUp(KeyCode.JoystickButton0))
             {
                 spriteRenderer.color = Color.red;
                 taking = false;
