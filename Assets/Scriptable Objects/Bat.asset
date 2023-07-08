@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75063c3ded48a245b6547abfade7f23, type: 3}
   m_Name: Bat
   m_EditorClassIdentifier: 
-  name: 
-  sprite: {fileID: 0}
+  itemName: 
+  sprite: {fileID: 21300000, guid: fab6e93666dc4ee49b5e5fd004737737, type: 3}
