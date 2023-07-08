@@ -13,12 +13,8 @@ public class PlayerBehavior : MonoBehaviour
 
     Vector2 inputMovement;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+    public int pickup;
 
-    // Update is called once per frame
     void Update()
     {
         inputMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));

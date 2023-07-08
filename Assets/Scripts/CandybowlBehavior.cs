@@ -14,13 +14,11 @@ public class CandybowlBehavior : MonoBehaviour
     public Slider slider;
     public PlayerBehavior player;
 
-    // Start is called before the first frame update
     void Start()
     {
         spriteRenderer.color = Color.magenta;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (taking)
@@ -33,9 +31,8 @@ public class CandybowlBehavior : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (empty) return;
-
         if (collider.gameObject != player.gameObject) return;
-        //guard clauses ensure bowl is nonempty and touched by player
+        //guard clauses ensure bowl is being touched by the player
         spriteRenderer.color = Color.red;
         slider.gameObject.SetActive(true);
         taking = true;

@@ -16,7 +16,6 @@ public class CanvasFollowWorld : MonoBehaviour
         cam = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.position = cam.WorldToScreenPoint(lookAt.position + offset);
