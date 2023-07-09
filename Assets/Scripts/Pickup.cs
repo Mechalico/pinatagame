@@ -5,32 +5,47 @@ using UnityEngine;
 public class Pickup : MonoBehaviour
 {
     public Equip pickupType;
-
     public SpriteRenderer spriteRenderer;
 
-    public PlayerBehavior player;
+    private PlayerBehavior _player;
 
+    private void Start()
+    {
+        var player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player?.GetComponent<PlayerBehavior>() != null)
+        {
+            this._player = player.GetComponent<PlayerBehavior>(); 
+        }
+
+        RefreshSprite();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject != player.gameObject) return;
-        //guard clauses ensure pickup is being touched by the player
-        Equip oldPickup = player.pickup;
-        player.pickup = pickupType;
-        pickupType = oldPickup;
-        if (oldPickup == null) Destroy(gameObject);
-        pickupSprite();
-    }
-    
-    void Start()
-    {
-        pickupSprite();
+        if (this._player.gameObject != other.gameObject)
+        {
+            return;
+        }
+
+        var existingType = this._player.pickup;
+
+        this._player.pickup = this.pickupType;
+
+        if (existingType != null)
+        {
+            this.pickupType = existingType;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+        this.RefreshSprite();
     }
 
-    void pickupSprite()
+    void RefreshSprite()
     {
-        spriteRenderer.sprite = pickupType.sprite;
-    
+        this.spriteRenderer.sprite = this.pickupType.sprite;
     }
-
 }
