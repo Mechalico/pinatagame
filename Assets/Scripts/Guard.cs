@@ -62,7 +62,7 @@ public class Guard : MonoBehaviour
         {
             if (this.player.pickup?.itemName == "Blindfold")
             {
-                if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.JoystickButton0))
+                if (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetMouseButtonDown(1))
                 {
                     this.guardState = GuardState.Blindfolded;
                     this.spriteRenderer.color = Color.magenta;
