@@ -196,29 +196,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 256336515064553013, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
-      propertyPath: slider
-      value: 
-      objectReference: {fileID: 1442784929}
     - target: {fileID: 3974275767078941851, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
       propertyPath: m_Name
       value: pinata
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683403708987489750, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
-      propertyPath: m_Library.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683403708987489750, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
-      propertyPath: m_Library.Array.data[0].m_Name
-      value: moveUp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683403708987489750, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
-      propertyPath: m_Library.Array.data[0].m_CategoryList.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683403708987489750, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
-      propertyPath: m_Library.Array.data[0].m_CategoryList.Array.data[0].m_Name
-      value: Entry
       objectReference: {fileID: 0}
     - target: {fileID: 8675093507732388790, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
       propertyPath: m_RootOrder
@@ -264,10 +244,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8730749170579281099, guid: 1ebb855aa90075548a213e80eb7294fe, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: c340237b25c871545bc5b94ca5daa82f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1023,17 +999,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7189830755205011009, guid: 414ebad52da7f7c4288699894c8a3e5c, type: 3}
   m_PrefabInstance: {fileID: 326688210}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1442784929 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8818206864990562255, guid: 81b4ab9f016b0cd4ca76153b76ebbf92, type: 3}
-  m_PrefabInstance: {fileID: 1890627020432819515}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1447501420
 GameObject:
   m_ObjectHideFlags: 0
