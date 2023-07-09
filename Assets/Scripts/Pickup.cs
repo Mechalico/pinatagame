@@ -8,6 +8,7 @@ public class Pickup : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     private PlayerBehavior _player;
+    private bool _canPickup;
 
     private void Start()
     {
@@ -18,12 +19,12 @@ public class Pickup : MonoBehaviour
             this._player = player.GetComponent<PlayerBehavior>(); 
         }
 
-        RefreshSprite();
+        this.RefreshSprite();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void FixedUpdate()
     {
-        if (this._player.gameObject != other.gameObject)
+        if (!this._canPickup)
         {
             return;
         }
@@ -44,7 +45,23 @@ public class Pickup : MonoBehaviour
         this.RefreshSprite();
     }
 
-    void RefreshSprite()
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (this._player.gameObject == other.gameObject)
+        {
+            this._canPickup = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (this._player.gameObject == other.gameObject)
+        {
+            this._canPickup = false;
+        }
+    }
+
+    private void RefreshSprite()
     {
         this.spriteRenderer.sprite = this.pickupType.sprite;
     }
