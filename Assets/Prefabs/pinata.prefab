@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 13539378435111893}
   - component: {fileID: 6269975991596661741}
   - component: {fileID: 8730749170579281099}
+  - component: {fileID: 6683403708987489750}
   m_Layer: 0
   m_Name: pinata
   m_TagString: Player
@@ -140,10 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19c2dace03a6dd49820687dd68499bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 500
+  walkSpeed: 500
+  frameRate: 60
+  pickup: {fileID: 0}
   heldCandy: 0
-  rb: {fileID: 13539378435111893}
-  pickup: 0
 --- !u!50 &13539378435111893
 Rigidbody2D:
   serializedVersion: 4
@@ -247,7 +248,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 655a85c04902fb54fa6a40fa87b53661, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a5d33353690c8f1419d08cc7d15b0e10, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -258,3 +259,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6683403708987489750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3974275767078941851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: fc061103b1209ce4686b25e2134d4994, type: 3}

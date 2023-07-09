@@ -1,17 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    public List<Sprite> northSprites;
-    public List<Sprite> northEastSprites;
-    public List<Sprite> eastSprites;
-    public List<Sprite> southEastSprites;
-    public List<Sprite> southSprites;
-
-    public float walkSpeed;
-    public float frameRate;
+    public float walkSpeed = 500;
+    public float frameRate = 60;
 
     public Equip pickup; 
 
@@ -21,11 +17,13 @@ public class PlayerBehavior : MonoBehaviour
     private Vector2 _direction;
     private SpriteRenderer _spriteRenderer;
     private float _idleTime;
+    private SpriteLibraryAsset _spriteLibraryAsset;
 
     private void Awake()
     {
         this._body = this.GetComponent<Rigidbody2D>();
         this._spriteRenderer = this.GetComponent<SpriteRenderer>();
+        this._spriteLibraryAsset = this.GetComponent<SpriteLibrary>().spriteLibraryAsset;
     }
 
     private void Update()
@@ -68,7 +66,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private void UpdateSpriteFrame()
     {
-        var sprites = GetAnimationSprites();
+        var sprites = GetSpritesForDirection();
 
         if (sprites == null)
         {
@@ -83,20 +81,36 @@ public class PlayerBehavior : MonoBehaviour
         this._spriteRenderer.sprite = sprites[frame];
     }
 
-    private List<Sprite> GetAnimationSprites()
+    private List<Sprite> GetSpritesForDirection()
     {
-        var movingHorizontally = Mathf.Abs(this._direction.x) > 0;
+        var movingHorizontally = Mathf.Abs(this._direction.x) > 0.1;
 
         if (this._direction.y > 0)
         {
-            return movingHorizontally ? this.northEastSprites : this.northSprites;
+            return movingHorizontally ? GetSpritesFromLibrary("moveNorthEast") : GetSpritesFromLibrary("moveNorth");
         }
 
         if (this._direction.y < 0)
         {
-            return movingHorizontally ? this.southEastSprites : this.southSprites;
+            return movingHorizontally ? GetSpritesFromLibrary("moveSouthEast") : GetSpritesFromLibrary("moveSouth");
         }
 
-        return movingHorizontally ? this.eastSprites : null;
+        return movingHorizontally ? GetSpritesFromLibrary("moveEast") : null;
+    }
+
+    private List<Sprite> GetSpritesFromLibrary(string category)
+    {
+        List<Sprite> sprites = new List<Sprite>();
+
+        List<string> labels = this._spriteLibraryAsset.GetCategoryLabelNames(category).ToList();
+        foreach (string label in labels)
+        {
+            Debug.Log(label);
+            Sprite sprite = this._spriteLibraryAsset.GetSprite(category, label);
+            Debug.Log(sprite.name);
+            sprites.Add(sprite);
+        }
+
+        return sprites;
     }
 }
