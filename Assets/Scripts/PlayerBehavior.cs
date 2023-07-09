@@ -60,7 +60,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (this._direction.x != 0)
         {
-            this._spriteRenderer.flipX = this._direction.x < 0;
+            this._spriteRenderer.flipX = this._direction.x > 0;
         }
     }
 
@@ -83,34 +83,19 @@ public class PlayerBehavior : MonoBehaviour
 
     private List<Sprite> GetSpritesForDirection()
     {
-        var movingHorizontally = Mathf.Abs(this._direction.x) > 0.1;
+        var direction = "";
 
-        if (this._direction.y > 0)
-        {
-            return movingHorizontally ? GetSpritesFromLibrary("moveNorthEast") : GetSpritesFromLibrary("moveNorth");
-        }
+        if (this._direction.y > 0) direction = "Up";
+        if (this._direction.y < 0) direction = "Down";
+        if (Mathf.Abs(this._direction.x) > 0.1) direction += "Side";
 
-        if (this._direction.y < 0)
-        {
-            return movingHorizontally ? GetSpritesFromLibrary("moveSouthEast") : GetSpritesFromLibrary("moveSouth");
-        }
-
-        return movingHorizontally ? GetSpritesFromLibrary("moveEast") : null;
+        return string.IsNullOrEmpty(direction) ? null : GetSprites("move" + direction);
     }
 
-    private List<Sprite> GetSpritesFromLibrary(string category)
+    private List<Sprite> GetSprites(string category)
     {
-        List<Sprite> sprites = new List<Sprite>();
-
-        List<string> labels = this._spriteLibraryAsset.GetCategoryLabelNames(category).ToList();
-        foreach (string label in labels)
-        {
-            Debug.Log(label);
-            Sprite sprite = this._spriteLibraryAsset.GetSprite(category, label);
-            Debug.Log(sprite.name);
-            sprites.Add(sprite);
-        }
-
-        return sprites;
+        return this._spriteLibraryAsset.GetCategoryLabelNames(category)
+            .Select(label => this._spriteLibraryAsset.GetSprite(category, label))
+            .ToList();
     }
 }
