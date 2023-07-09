@@ -60,14 +60,19 @@ public class Guard : MonoBehaviour
             case GuardState.Suspicious:
                 rb.velocity = Vector2.zero;
                 spriteRenderer.color = Color.yellow;
-                if (CheckPlayerInRange())
+                var alertness = CheckPlayerAlertness();
+                Debug.Log(alertness);
+                if (alertness > 0)
                 {
                     suspicionCooldown = 0;
-                    suspicionAlert += Time.deltaTime;
+                    suspicionAlert += alertness * Time.deltaTime;
                 }
                 else
                 {
-                    suspicionAlert = 0;
+                    if (suspicionAlert > 0)
+                        suspicionAlert -= Time.deltaTime;
+                    else if (suspicionAlert < 0)
+                        suspicionAlert = 0;
                     suspicionCooldown += Time.deltaTime;
                 }
                 break;
@@ -126,7 +131,7 @@ public class Guard : MonoBehaviour
     {
         if (guardState == GuardState.Patrol || guardState == GuardState.Reset)
         {
-            if (CheckPlayerInRange())
+            if (CheckPlayerAlertness() > 0)
             {
                 suspicionCooldown = 0;
                 suspicionAlert = 0;
@@ -140,18 +145,17 @@ public class Guard : MonoBehaviour
         }
     }
 
-    bool CheckPlayerInRange()
+    float CheckPlayerAlertness()
     {
         var pathToPlayer = playerObject.GetComponent<Rigidbody2D>().position - rb.position;
-        Debug.Log(pathToPlayer.magnitude);
-        if (pathToPlayer.magnitude > suspicionRange) { return false; }
-        var angle = Vector3.Angle(pathToPlayer.normalized, rb.transform.up);
-        Debug.Log(angle);
-        if (Math.Abs(angle) > suspicionRange) { return false; }
+        if (pathToPlayer.magnitude > suspicionRange) { return 0; }
+        var viewAngle = Vector3.Angle(pathToPlayer.normalized, rb.transform.up);
+        if (Math.Abs(viewAngle) > suspicionAngle) { return 0; }
 
         //TODO raytrace
 
-        return true;
+        if (pathToPlayer.magnitude == 0) { return float.PositiveInfinity; }
+        else { return (suspicionRange * suspicionRange) / (pathToPlayer.magnitude * pathToPlayer.magnitude); }
     }
 
     enum GuardState

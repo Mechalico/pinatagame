@@ -103,10 +103,10 @@ MonoBehaviour:
   rb: {fileID: 7931291847851916099}
   targets:
   - {fileID: 0}
-  suspicionRange: 5
+  suspicionRange: 8
   suspicionAngle: 30
-  suspicionAlertLimit: 0.2
-  suspicionCooldownLimit: 0.2
+  suspicionAlertLimit: 0.5
+  suspicionCooldownLimit: 2
 --- !u!50 &7931291847851916099
 Rigidbody2D:
   serializedVersion: 4
@@ -159,8 +159,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8619969169499925993}
   m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
-  m_LocalPosition: {x: 0, y: 3, z: 1}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: 4.5, z: 1}
+  m_LocalScale: {x: 8, y: 8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5967509005581565302}
