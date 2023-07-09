@@ -593,7 +593,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1706011902398326790, guid: 6ec47fcd7de6f9946a200b29c8d72f20, type: 3}
       propertyPath: nextLevelName
-      value: Level4
+      value: VictoryScreen
       objectReference: {fileID: 0}
     - target: {fileID: 1706011902398326790, guid: 6ec47fcd7de6f9946a200b29c8d72f20, type: 3}
       propertyPath: thisLevelName
