@@ -103,7 +103,7 @@ MonoBehaviour:
   rb: {fileID: 7931291847851916099}
   targets:
   - {fileID: 0}
-  suspicionRange: 10
+  suspicionRange: 5
   suspicionAngle: 30
   suspicionAlertLimit: 0.2
   suspicionCooldownLimit: 0.2
