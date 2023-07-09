@@ -16,6 +16,8 @@ public class Guard : MonoBehaviour
 
     GuardState guardState;
 
+    GameObject lossScreen;
+
     Vector2 inputMovement;
 
     float timeToArrive;
@@ -40,6 +42,13 @@ public class Guard : MonoBehaviour
 
         targetIndex = 0;
         SetNextWaypoint();
+
+
+        var canvas = GameObject.FindGameObjectWithTag("Canvas");
+        if (canvas != null)
+            if (canvas.transform.Find("LevelLost") != null)
+                lossScreen = canvas.transform.Find("LevelLost").gameObject;
+
     }
 
     void FixedUpdate()
@@ -78,6 +87,8 @@ public class Guard : MonoBehaviour
                 break;
             case GuardState.Chase:
                 spriteRenderer.color = Color.red;
+                player.SetCanMove(false);
+                lossScreen.SetActive(true);
                 break;
         }
 
