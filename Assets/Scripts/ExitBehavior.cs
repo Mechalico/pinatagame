@@ -6,8 +6,8 @@ public class ExitBehavior : MonoBehaviour
 {
     PlayerBehavior player;
     public bool victory = false;
-    public GameObject go;
-    public GameObject winrar;
+    GameObject go;
+    GameObject winrar;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +15,14 @@ public class ExitBehavior : MonoBehaviour
         var playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null && playerObject.GetComponent<PlayerBehavior>() != null)
             player = playerObject.GetComponent<PlayerBehavior>();
+        var canvas = GameObject.FindGameObjectWithTag("Canvas");
+        if (canvas != null)
+        {
+            if (canvas.transform.Find("Go!") != null)
+                go = canvas.transform.Find("Go!").gameObject;
+            if (canvas.transform.Find("LevelWon") != null)
+                winrar = canvas.transform.Find("LevelWon").gameObject;
+        }
     }
 
     // Update is called once per frame
@@ -46,11 +54,15 @@ public class ExitBehavior : MonoBehaviour
 
             if (AllBowlsDone())
             {
-                victory = true; 
+                player.SetCanMove(false);
                 winrar.SetActive(true);
             }
 
         }
     }
 
+    public void ActivateGo()
+    {
+        go.SetActive(true);
+    }
 }

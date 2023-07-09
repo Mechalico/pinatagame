@@ -12,7 +12,7 @@ public class PlayerBehavior : MonoBehaviour
 
     public Equip pickup; 
     
-    public Slider slider;
+    Slider slider;
 
     public float heldCandy = 0.0F;
 
@@ -21,23 +21,45 @@ public class PlayerBehavior : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private float _idleTime;
     private SpriteLibraryAsset _spriteLibraryAsset;
+    private bool canMove = true;
 
     private void Awake()
     {
         this._body = this.GetComponent<Rigidbody2D>();
         this._spriteRenderer = this.GetComponent<SpriteRenderer>();
         this._spriteLibraryAsset = this.GetComponent<SpriteLibrary>().spriteLibraryAsset;
+
+        var canvas = GameObject.FindGameObjectWithTag("Canvas");
+        if (canvas != null)
+        {
+            if (canvas.transform.Find("Slider") != null)
+            {
+                Debug.Log("slider found");
+                slider = canvas.transform.Find("Slider").gameObject.GetComponent<Slider>();
+
+            }
+        }
     }
 
     private void Update()
     {
-        UpdateSpriteFlip();
-        UpdateSpriteFrame();
+        if(canMove)
+        {
+            UpdateSpriteFlip();
+            UpdateSpriteFrame();
+        }
     }
 
     private void FixedUpdate()
     {
-        UpdateVelocity();
+        if (canMove)
+        {
+            UpdateVelocity();
+        }
+        else
+        {
+            this._body.velocity = Vector2.zero;
+        }
     }
 
     public void AddCandy(float candyToAdd)
@@ -100,5 +122,27 @@ public class PlayerBehavior : MonoBehaviour
         return this._spriteLibraryAsset.GetCategoryLabelNames(category)
             .Select(label => this._spriteLibraryAsset.GetSprite(category, label))
             .ToList();
+    }
+
+    public void SliderDeactivate()
+    {
+        slider.gameObject.SetActive(false);
+    }
+    public void SliderActivate()
+    {
+        slider.gameObject.SetActive(true);
+    }
+    public void SliderSetValue(float value)
+    {
+        slider.value = value;
+    }
+    public CanvasFollowWorld SliderGetCanvasFollowWorld()
+    {
+        return slider.GetComponent<CanvasFollowWorld>();
+    }
+
+    public void SetCanMove(bool canMove)
+    {
+        this.canMove = canMove;
     }
 }

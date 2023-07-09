@@ -47,7 +47,7 @@ public class CandybowlBehavior : MonoBehaviour
         if (taking)
         {
             player.AddCandy(Deplete(depletionRate * Time.deltaTime));
-            player.slider.value = fullness / maxFullness;
+            player.SliderSetValue(fullness / maxFullness);
         }
     }
 
@@ -60,9 +60,9 @@ public class CandybowlBehavior : MonoBehaviour
             {
                 spriteRenderer.color = Color.red;
                 readyToTake = true;
-                player.slider.gameObject.SetActive(true);
-                player.slider.value = fullness / maxFullness;  
-                CanvasFollowWorld slid = player.slider.GetComponent<CanvasFollowWorld>();
+                player.SliderActivate();
+                player.SliderSetValue(fullness / maxFullness);  
+                CanvasFollowWorld slid = player.SliderGetCanvasFollowWorld();
                 slid.lookAt = transform;
             }
         }
@@ -76,10 +76,7 @@ public class CandybowlBehavior : MonoBehaviour
         if (fullness < amountToDeplete)
         {
             toAdd = fullness;
-            fullness = 0;
-            empty = true;
-            spriteRenderer.color = Color.gray;
-            player.slider.gameObject.SetActive(false);
+            EmptyBowl();
         }
         else
         {
@@ -97,17 +94,25 @@ public class CandybowlBehavior : MonoBehaviour
         if (!empty) 
         {
             spriteRenderer.color = Color.magenta;
-        }else{
-            var exit = GameObject.FindGameObjectsWithTag("Exit")
-                       [0]
-                       .GetComponent<ExitBehavior>();
-            if (exit.AllBowlsDone()){
-                //GO!
-                exit.go.SetActive(true);
-            }
         }
-        player.slider.gameObject.SetActive(false);
+        player.SliderDeactivate();
         readyToTake = false;
         taking = false;
+    }
+
+    private void EmptyBowl()
+    {
+        fullness = 0;
+        empty = true;
+        spriteRenderer.color = Color.gray;
+        var exit = GameObject.FindGameObjectsWithTag("Exit")
+                   [0]
+                   .GetComponent<ExitBehavior>();
+        if (exit.AllBowlsDone())
+        {
+            //GO!
+            exit.ActivateGo();
+        }
+        player.SliderDeactivate();
     }
 }
