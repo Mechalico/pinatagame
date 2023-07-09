@@ -13,7 +13,6 @@ public class CandybowlBehavior : MonoBehaviour
     public bool empty = false;
     bool readyToTake = false;
     bool taking = false;
-    // public Slider slider;
     PlayerBehavior player;
 
     void Start()
@@ -48,7 +47,7 @@ public class CandybowlBehavior : MonoBehaviour
         if (taking)
         {
             player.AddCandy(Deplete(depletionRate * Time.deltaTime));
-            //slider.value = fullness / 100f;
+            player.slider.value = fullness / maxFullness;
         }
     }
 
@@ -61,7 +60,10 @@ public class CandybowlBehavior : MonoBehaviour
             {
                 spriteRenderer.color = Color.red;
                 readyToTake = true;
-                //slider.gameObject.SetActive(true);
+                player.slider.gameObject.SetActive(true);
+                player.slider.value = fullness / maxFullness;  
+                CanvasFollowWorld slid = player.slider.GetComponent<CanvasFollowWorld>();
+                slid.lookAt = transform;
             }
         }
 
@@ -77,7 +79,7 @@ public class CandybowlBehavior : MonoBehaviour
             fullness = 0;
             empty = true;
             spriteRenderer.color = Color.gray;
-            //slider.gameObject.SetActive(false);
+            player.slider.gameObject.SetActive(false);
         }
         else
         {
@@ -93,7 +95,7 @@ public class CandybowlBehavior : MonoBehaviour
         //player left this bowl
 
         if (!empty) spriteRenderer.color = Color.magenta;
-        // slider.gameObject.SetActive(false);
+        player.slider.gameObject.SetActive(false);
         readyToTake = false;
         taking = false;
     }

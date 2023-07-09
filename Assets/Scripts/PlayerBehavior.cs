@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.U2D.Animation;
 
 public class PlayerBehavior : MonoBehaviour
@@ -10,6 +11,8 @@ public class PlayerBehavior : MonoBehaviour
     public float frameRate = 60;
 
     public Equip pickup; 
+    
+    public Slider slider;
 
     public float heldCandy = 0.0F;
 
