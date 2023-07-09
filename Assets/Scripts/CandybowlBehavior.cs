@@ -94,7 +94,18 @@ public class CandybowlBehavior : MonoBehaviour
         if (other.gameObject != player.gameObject) return;
         //player left this bowl
 
-        if (!empty) spriteRenderer.color = Color.magenta;
+        if (!empty) 
+        {
+            spriteRenderer.color = Color.magenta;
+        }else{
+            var exit = GameObject.FindGameObjectsWithTag("Exit")
+                       [0]
+                       .GetComponent<ExitBehavior>();
+            if (exit.AllBowlsDone()){
+                //GO!
+                exit.go.SetActive(true);
+            }
+        }
         player.slider.gameObject.SetActive(false);
         readyToTake = false;
         taking = false;
