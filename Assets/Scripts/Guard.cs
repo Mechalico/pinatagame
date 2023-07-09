@@ -32,20 +32,56 @@ public class Guard : MonoBehaviour
     public float suspicionCooldownLimit = 3f;
     float suspicionCooldown = 0;
 
+    private GameObject _sightCone;
+    private bool _canBlindfold = false;
+    private float _blindfoldedTime = 0;
+
     void Start()
     {
         guardState = GuardState.Patrol;
         playerObject = GameObject.FindGameObjectWithTag("Player");
         player = playerObject.GetComponent<PlayerBehavior>();
+        _sightCone = this.transform.Find("GuardSightCone").gameObject;
 
         targetIndex = 0;
         SetNextWaypoint();
+    }
+
+    private void Update()
+    {
+        if (this._canBlindfold && guardState != GuardState.Blindfolded)
+        {
+            if (this.player.pickup?.itemName == "Blindfold")
+            {
+                if (Input.GetKeyDown(KeyCode.J) || Input.GetKeyDown(KeyCode.JoystickButton0))
+                {
+                    this.guardState = GuardState.Blindfolded;
+                    this.spriteRenderer.color = Color.magenta;
+                    this._blindfoldedTime = 500;
+                    this.player.pickup = null;
+                }
+            }
+        }
+        
     }
 
     void FixedUpdate()
     {
         switch (guardState)
         {
+            case GuardState.Blindfolded:
+                if (this._blindfoldedTime > 0)
+                {
+                    _sightCone.SetActive(false);
+                    this._blindfoldedTime--;
+                    rb.velocity = Vector2.zero;
+                }
+                else
+                {
+                    _sightCone.SetActive(true);
+                    this.guardState = GuardState.Patrol;
+                }
+                break; // Stop patrolling
             case GuardState.Patrol:
                 spriteRenderer.color = Color.blue;
                 timeWalked += Time.deltaTime;
@@ -158,12 +194,29 @@ public class Guard : MonoBehaviour
         else { return (suspicionRange * suspicionRange) / (pathToPlayer.magnitude * pathToPlayer.magnitude); }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject == player.gameObject)
+        {
+            this._canBlindfold = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject == player.gameObject)
+        {
+            this._canBlindfold = false;
+        }
+    }
+
     enum GuardState
     {
         Patrol,
         Suspicious,
         Chase,
+        Blindfolded,
         Stunned,
-        Reset
+        Reset,
     }
 }
